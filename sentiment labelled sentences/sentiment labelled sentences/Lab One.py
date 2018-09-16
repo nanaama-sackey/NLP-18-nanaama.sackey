@@ -1,47 +1,69 @@
-#NLP LAB 1
+#NLP LAB 1 
 import re
 
 #reading the file.
-def readFile(file):
+def readFile(files):
     MainClassification=[]
-    blah= {}
-    for line in open(file):
-        # getting rid of all regular expressions not needed and substitues it with my own something
-        lineCleaner = re.sub(r"[,/?!-()\t\n*&^}:;{=$%]","",line)
-        lineCleaner2 = re.sub(r"[.']"," ",lineCleaner)
-        final = MainClassification.append(lineCleaner2)
-        value = int(lineCleaner2[-1][-1])
-        if value in blah:
-            blah[value].append(lineCleaner2[:-1])
-            print(blah)
-        else:
-            blah[value] = [lineCleaner2[:-1]]
-            print(blah)
-    
-    #return MainClassification
+    data = {
+        0:[],
+        1:[]}
+    for file in files:
+        for line in open(file):
+            # getting rid of all regular expressions not needed and substitues it with my own something
+            lineCleaner = re.sub(r"[,/?!-()*&^}:;{=$%]","",line)
+            lineCleaner2 = re.sub(r"[.']"," ",lineCleaner.casefold())
+            final = MainClassification.append(lineCleaner2)
+            review = line.split('\t')
+            features= review[0].split()
+            label = int(review[1])
+            if label == 0:
+                data[0].append(features)
+            else:
+                data[1].append(features)
+            
+    print("The total words in the negative class is: " , len(data[0])) 
+    print("The total words in the positive class is: " , len(data[1])) 
+    return data
+readFile(['amazon_cells_labelled.txt',"imdb_labelled.txt","yelp_labelled.txt"])
 
-readFile('amazon_cells_labelled.txt')
-    
-        
-def split():
-    positiveClass={}
-    negativeClass ={}
-    MainClassification, lineCleaner2 = readFile('amazon_cells_labelled.txt')
-    value = int(lineCleaner2[-1][-1])
-    if value in MainClassification:
-        MainClassification[value].append(lineCleaner2[:-1])
-    else:
-        MainClassification[value] = [lineCleaner2[:-1]]
-    return value
 
-def PostiveClass(MainClaasification):
-     blah ={}
-     for line in MainClassification[1]:
-         value = int(lineCleaner2[-1][-1])
-         if value in blah:
-             blah[value].append(lineCleaner2[:-1])
-             print(blah)
-         else:
-             blah[value] = [lineCleaner2[:-1]]
-             print(blah)
-     return blah
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##import re
+##
+###reading the file.
+##def readFile(file):
+##    MainClassification=[]
+##    words= {}
+##    for line in open(file):
+##        # getting rid of all regular expressions not needed and substitues it with my own something
+##        lineCleaner = re.sub(r"[,/?!-()\t\n*&^}:;{=$%]","",line)
+##        lineCleaner2 = re.sub(r"[.']"," ",lineCleaner)
+##        final = MainClassification.append(lineCleaner2)
+##        value = int(lineCleaner2[-1][-1])
+##        if value in words:
+##            words[value].append(lineCleaner2[:-1])
+##            print("YAYY",words)
+##        else:
+##            words[value] = [lineCleaner2[:-1]]
+##            print("I am printing:", words)
+##    
+##    #return MainClassification
+##
+##readFile('amazon_cells_labelled.txt')
