@@ -6,30 +6,29 @@
 #      Name: Nana Ama Atombo-Sackey
 #    
 
-# In[1]:
+# In[31]:
 
 
+import sys
 import re
+import random
 from math import *
 #reading the file.
 def readFile(files):
-    MainClassification=[]
     data = {
         0:[],
         1:[]}
     for file in files:
         for line in open(file):
             # getting rid of all regular expressions not needed
-            lineCleaner = re.sub(r"[,/?!-()*&^}:;{=$%]","",line)
-            lineCleaner2 = re.sub(r"[.']"," ",lineCleaner.lower())
-            final = MainClassification.append(lineCleaner2)
-            review = line.split('\t')
-            features= review[0].split()
+            review = line.split('\n')
+            review = review[0].split('\t')
+            features = re.sub(r"[&)#-=$!(%)]+","",review[0])   
             label = int(review[1])
             if label == 0:
-                data[0].append(features)
+                data[0].append(features.split())
             else:
-                data[1].append(features)
+                data[1].append(features.split())
             
     print("The total words in the negative class is: " , len(data[0])) 
     print("The total words in the positive class is: " , len(data[1])) 
@@ -41,7 +40,7 @@ corpus= readFile(['amazon_cells_labelled.txt',"imdb_labelled.txt","yelp_labelled
 # #### Calculating log prior and loglikelihood ###
 # 
 
-# In[3]:
+# In[32]:
 
 
 def train(doc):
@@ -65,7 +64,7 @@ def train(doc):
         #print(prior[c])
         
     print("The number of documents from Corpus in the class is: ",numOfDocClass)
-    #print("The logpriority is: ", logprior)
+    print("The logpriority is: ", prior)
    
     for c in doc:
         for reviews in doc[c]:
@@ -75,7 +74,7 @@ def train(doc):
                     wordCount[c][words]+=1
                 else:
                     wordCount[c][words]=1
-    #print(wordCount)
+    
     vocabulary = []
     for c in classes:
         vocabulary += list(wordCount[c].keys()) 
@@ -86,22 +85,21 @@ def train(doc):
                 likelihood[c][words] = log( ((wordCount[c][words] + 1)/(sum(wordCount[c].values())+len(vocabulary))) )
             else:
                  likelihood[c][words] = log(((1)/(sum(wordCount[c].values())+len(vocabulary))) )
-   # print (likelihood[0]['good'], likelihood[1]['good'])
-   # print (wordCount[0]['good'], wordCount[1]['good'])
+ 
     return prior,likelihood,vocabulary
 prior,likelihood,vocabulary=train(corpus)
 
 
 # #### Implementing Test Function ####
 
-# In[4]:
+# In[44]:
 
 
 def test(doc, prior, likelihood,vocabulary):
     summ = dict()
     for c in [0,1]:
         summ[c]= prior[c]
-        for word in doc:
+        for word in doc.split():
             if word in vocabulary:
                 summ[c] = summ[c] + likelihood[c][word]
     print(summ)
@@ -109,12 +107,26 @@ def test(doc, prior, likelihood,vocabulary):
         return 0 
     else:
         return 1
-    
-print(test("awesome", prior,likelihood,vocabulary))
+    return vocabulary
+
+
+def read(file):
+    read_me = open(file, "r") #Reading file
+    write_file = open("results_file.txt", "w") # Writing to file
+    finalRead = read_me.readline()
+    while (len(finalRead) != 0):
+        result = test(finalRead, prior,likelihood,vocabulary)
+        print("The class for this input is: ",result)
+        write_file.write(finalRead + str(result) + str("\t"))
+        finalRead = read_me.readline()
 
 
 
+# In[ ]:
 
 
-
+if __name__ == "__main__":
+    read(sys.argv[1])
+else:
+    print("Unable to take file please")
 
