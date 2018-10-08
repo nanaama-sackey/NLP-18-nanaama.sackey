@@ -114,10 +114,10 @@ def read(file):
     read_me = open(file, "r") #Reading file
     write_file = open("results_file.txt", "w") # Writing to file
     finalRead = read_me.readline()
-    while (len(finalRead) != 0):
+    while (len(finalRead)!= 0):
         result = test(finalRead, prior,likelihood,vocabulary)
         print("The class for this input is: ",result)
-        write_file.write(finalRead + str(result) + str("\t"))
+        write_file.write(finalRead  + str(result)+" "   + str("\n"))
         finalRead = read_me.readline()
 
 
