@@ -75,7 +75,17 @@ def testNaiveBayes_A(file):
     ##Setting labels where 0 is negative and 1 is positive
     y = list(df.Label)
     x=  df.Text
-    
+
+
+    #Making sentiment classification
+    predictL =[]
+    for i in range (len(x)):
+        sentiment = np.array([str(x[i])])
+        sentiment_transform = vectorizer.transform(sentiment)
+        predict =   MNBN_classifier.predict(sentiment_transform)
+        predictL.append(predict[0])
+
+        
    #Evaluating the model using the classification report function form sklearn
 
     predicted = model.predict(x_test)
@@ -85,7 +95,7 @@ def testNaiveBayes_A(file):
     
     print(" Below is how the classifier was evaluated: \n" ,classification_report(y_test, predicted))
     
-    return y
+    return(predictL,"\n")
 #testNaiveBayes_A("yelp_labelled.txt")
 
 
@@ -132,6 +142,15 @@ def testNaiveBayes_B(file):
     y = list(df.Label)
     x=  df.Text
     
+    #Making sentiment classification
+    predictL =[]
+    for i in range (len(x)):
+        sentiment = np.array([str(x[i])])
+        sentiment_transform = vectorizer.transform(sentiment)
+        predict =   MNBU_classifier.predict(sentiment_transform)
+        predictL.append(predict[0])
+        
+    
     #Evaluating the model using the classification report function form sklearn
     predicted = model.predict(x_test)
     print("Our Accuracy is: " ,np.mean(predicted == y_test)*100) 
@@ -139,7 +158,8 @@ def testNaiveBayes_B(file):
     #print(" Accuracy is: " ,accuracy_score(y_test, predicted)*100) 
     
     print(" Below is how the classifier is evaluated: \n" ,classification_report(y_test, predicted))
-    return y
+    return(predictL,"\n")
+    
     
 #testNaiveBayes_B("yelp_labelled.txt")
 
@@ -185,7 +205,15 @@ def testNormLR_A(file):
     ##Setting labels where 0 is negative and 1 is positive
     y = list(df.Label)
     x=  df.Text
-   
+
+    #Making sentiment classification
+    predictL =[]
+    for i in range (len(x)):
+        sentiment = np.array([str(x[i])])
+        sentiment_transform = vectorizer.transform(sentiment)
+        predict =  LRN_classifier .predict(sentiment_transform)
+        predictL.append(predict[0])
+        
     #Evaluating the model using the classification report function form sklearn
     predicted = model.predict(x_test)
     print("Our Accuracy is: " ,np.mean(predicted == y_test)*100) 
@@ -193,7 +221,8 @@ def testNormLR_A(file):
     print(" Accuracy is: " , accuracy_score (y_test, predicted)*100) 
     
     print(" Below is how the classifier is evaluated: \n" ,classification_report(y_test, predicted))
-    return y
+    return(predictL,"\n")
+    
     
     
 #testNormLR_A("yelp_labelled.txt")
@@ -239,7 +268,15 @@ def testUnNormLR_B(file):
     ##Setting labels where 0 is negative and 1 is positive
     y = list(df.Label)
     x=  df.Text
-    
+
+    #Making sentiment classification
+    predictL =[]
+    for i in range (len(x)):
+        sentiment = np.array([str(x[i])])
+        sentiment_transform = vectorizer.transform(sentiment)
+        predict = UnNormalisedLr_classifier.predict(sentiment_transform)
+        predictL.append(predict[0])
+        
     #Evaluating the model using the classification report function form sklearn
     predicted = model.predict(x_test)
     print("Our Accuracy is: " ,np.mean(predicted == y_test)*100) 
@@ -247,7 +284,8 @@ def testUnNormLR_B(file):
     print(" Accuracy is: " , accuracy_score (y_test, predicted)*100) 
     
     print(" Below is how the classifier is evaluated: \n" ,classification_report(y_test, predicted))
-    return y
+    return(predictL,"\n")
+    
     
     
 
@@ -255,12 +293,12 @@ def testUnNormLR_B(file):
 # In[237]:
 
 
-def results(classifier, version, y):
+def results(classifier, version, predictL):
     file_name = open("results-"+classifier+"-"+version+".txt", "w")
-    file_name.write("y: "+"\n")
+    file_name.write("Output: "+"\n")
     
-    for label in y:
-        file_name.write(str(label)+"\n")
+    for label in  predictL:
+        file_name.write(str(label)+ "\n")
         
         
 
@@ -274,18 +312,18 @@ if __name__ == '__main__':
     file = sys.argv[3]
     
     if classifier == "nb" and version == "u":
-        y = testNaiveBayes_B(file)
+        predictL  = testNaiveBayes_B(file)
     elif classifier == "nb" and version == "n":
-        y = testNaiveBayes_A(file)
+        predictL = testNaiveBayes_A(file)
     elif classifier == "lr" and version == "n":
-        y= testNormLR_A(file)
+        predictL = testNormLR_A(file)
     elif classifier == "lr" and version == "u":
-        y = testUnNormLR_B(file)
+         predictL = testUnNormLR_B(file)
     else:
         print("Kindly check your syntax or input the right cominations")
         
         sys.exit()
         
     
-    results(classifier, version, y)
+    results(classifier, version, predictL)
 
