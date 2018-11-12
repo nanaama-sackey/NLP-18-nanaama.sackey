@@ -59,7 +59,7 @@ def NaiveBayes_A():
 #NaiveBayes_A()
 
 
-# In[251]:
+# In[253]:
 
 
 #TRAINING THE NORMALISED NAIVE BAIYES CLASSIFIER
@@ -84,7 +84,7 @@ def testNaiveBayes_A(file):
     print(" Below is how the classifier was evaluated: \n" ,classification_report(y_test, predicted))
     
     return y
-testNaiveBayes_A("yelp_labelled.txt")
+#testNaiveBayes_A("yelp_labelled.txt")
 
 
 # In[246]:
@@ -116,7 +116,7 @@ def NaiveBayes_B():
 #NaiveBayes_B()
 
 
-# In[247]:
+# In[254]:
 
 
 #TRAINING THE UNNORMALISED NAIVE BAIYES CLASSIFIER
@@ -139,10 +139,10 @@ def testNaiveBayes_B(file):
     print(" Below is how the classifier is evaluated: \n" ,classification_report(y_test, predicted))
     return y
     
-testNaiveBayes_B("yelp_labelled.txt")
+#testNaiveBayes_B("yelp_labelled.txt")
 
 
-# In[248]:
+# In[255]:
 
 
 #A NORMALISED LOGISTIC REGRESSION TRAIN FUNCTION.
@@ -167,10 +167,10 @@ def normLR_A():
     model = LRN_classifier.fit(x_train, y_train)
         
     return LRN_classifier, vectorizer, model, x_test, y_test
-normLR_A()
+#normLR_A()
 
 
-# In[249]:
+# In[256]:
 
 
 #TRAINING THE NORMALISED LOGISTIC REGRESSION CLASSIFIER
@@ -194,7 +194,7 @@ def testNormLR_A(file):
     return y
     
     
-testNormLR_A("yelp_labelled.txt")
+#testNormLR_A("yelp_labelled.txt")
 
 
 # In[221]:
