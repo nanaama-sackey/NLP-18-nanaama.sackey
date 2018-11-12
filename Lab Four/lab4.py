@@ -295,9 +295,8 @@ def testUnNormLR_B(file):
 
 def results(classifier, version, predictL):
     file_name = open("results-"+classifier+"-"+version+".txt", "w")
-    file_name.write("Output: "+"\n")
-    
-    for label in  predictL:
+    #file_name.write("Output: "+"\n")
+    for label in  predictL[0]:
         file_name.write(str(label)+ "\n")
         
         
