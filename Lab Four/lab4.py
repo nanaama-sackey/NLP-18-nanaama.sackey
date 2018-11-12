@@ -16,6 +16,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
+
 
 
 # In[90]:
@@ -50,7 +52,7 @@ def NaiveBayes_A():
     x_train, x_test, y_train, y_test =train_test_split(x,y, random_state = 35 , train_size =0.95, test_size =0.05)
     
     #Training the Classifier (MultinomialNB Normalised Classifier(MNBN Classifier))
-    MNBN_classifier = MultinomialNB()
+    MNBN_classifier = naive_bayes.MultinomialNB()
     model = MNBN_classifier.fit(x_train, y_train)
    
 
@@ -87,7 +89,7 @@ def testNaiveBayes_A(file):
 #testNaiveBayes_A("yelp_labelled.txt")
 
 
-# In[246]:
+# In[259]:
 
 
 #UnNormalised form of NaiveBayes Classifier
@@ -107,13 +109,13 @@ def NaiveBayes_B():
     
  #Training the Classifier (MultinomialNB Unormalised Classifier(MNBU Classifier))
 
-    MNBU_classifier = MultinomialNB()
+    MNBU_classifier =naive_bayes. MultinomialNB()
     model= MNBU_classifier.fit(x_train, y_train)
    
 
     return MNBU_classifier , vectorizer, model, x_test,y_test
     
-#NaiveBayes_B()
+NaiveBayes_B()
 
 
 # In[254]:
@@ -134,7 +136,7 @@ def testNaiveBayes_B(file):
     predicted = model.predict(x_test)
     print("Our Accuracy is: " ,np.mean(predicted == y_test)*100) 
     
-    print(" Accuracy is: " ,accuracy_score(y_test, predicted)*100) 
+    #print(" Accuracy is: " ,accuracy_score(y_test, predicted)*100) 
     
     print(" Below is how the classifier is evaluated: \n" ,classification_report(y_test, predicted))
     return y
@@ -157,7 +159,7 @@ def normLR_A():
     x=vectorizer.fit_transform(data.Text)# transfroming the data to features 
     
     #Removing unnecessary punctuations
-    df['Text'] = df.Text.str.replace('[^\w\s]', '') 
+    data['Text'] = data.Text.str.replace('[^\w\s]', '') 
  
     #Training the data
     x_train, x_test, y_train, y_test =train_test_split(x,y, random_state = 40, train_size =0.95, test_size =0.05)
@@ -230,8 +232,7 @@ def unNormLR_B():
 def testUnNormLR_B(file):
     #Reading of the file
     df = pd.read_csv(file, sep='\t', names=['Text','Label'], index_col=None, header =-1)
-    print(df)
-    
+   
       #Training on the normalised LR classifier
         
     UnNormalisedLr_classifier, vectorizer, model, x_test, y_test = unNormLR_B()
@@ -255,7 +256,7 @@ def testUnNormLR_B(file):
 
 
 def results(classifier, version, y):
-    file_name = open("results-"+classifier+"-"+version+".txt", w)
+    file_name = open("results-"+classifier+"-"+version+".txt", "w")
     file_name.write("y: "+"\n")
     
     for label in y:
@@ -264,27 +265,27 @@ def results(classifier, version, y):
         
 
 
-# In[ ]:
+# In[258]:
 
 
-if__name__ == "__main__":
+if __name__ == '__main__':
     classifier =sys.argv[1]
     version = sys.argv[2]
     file = sys.argv[3]
     
     if classifier == "nb" and version == "u":
-        testNaiveBayes_B(file)
+        y = testNaiveBayes_B(file)
     elif classifier == "nb" and version == "n":
-        testNaiveBayes_A(file)
+        y = testNaiveBayes_A(file)
     elif classifier == "lr" and version == "n":
-        testNormLR_A(file)
+        y= testNormLR_A(file)
     elif classifier == "lr" and version == "u":
-        testUnNormLR_B(file)
+        y = testUnNormLR_B(file)
     else:
         print("Kindly check your syntax or input the right cominations")
         
         sys.exit()
         
     
-    results(classifier, version)
+    results(classifier, version, y)
 

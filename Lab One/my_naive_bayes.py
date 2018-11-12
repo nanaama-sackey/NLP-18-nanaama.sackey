@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ### Natural Language Processing ###
-#      A Naive Bayes Classifier 
-#      Name: Nana Ama Atombo-Sackey
-#    
+#  ### Natural Language Processing ###
+#   # A Naive Bayes Classifier 
+#   #  Name: Nana Ama Atombo-Sackey
+#   #    Lab One
 
-# In[31]:
+# In[3]:
 
 
 import sys
 import re
 import random
 from math import *
-#reading the file.
+#reading files to train on.
 def readFile(files):
     data = {
         0:[],
@@ -37,10 +37,9 @@ corpus= readFile(['amazon_cells_labelled.txt',"imdb_labelled.txt","yelp_labelled
     
 
 
-# #### Calculating log prior and loglikelihood ###
-# 
+#  #### Calculating log prior and loglikelihood by implementing it in the trian function below ##
 
-# In[32]:
+# In[4]:
 
 
 def train(doc):
@@ -57,15 +56,17 @@ def train(doc):
         1:{}
     }
     print("The number of documents in D(corpus) is :", numOfDocD)
+    
     #calculating log prior
     for c in classes:
         numOfDocClass = len(doc[c])
         prior[c] = log((numOfDocClass/numOfDocD))
-        #print(prior[c])
-        
+              
     print("The number of documents from Corpus in the class is: ",numOfDocClass)
     print("The logpriority is: ", prior)
-   
+    
+    
+   # Calculating log likelihood
     for c in doc:
         for reviews in doc[c]:
 
@@ -90,9 +91,9 @@ def train(doc):
 prior,likelihood,vocabulary=train(corpus)
 
 
-# #### Implementing Test Function ####
+# #### Implementing Test Function and Results File or Output ####
 
-# In[44]:
+# In[5]:
 
 
 def test(doc, prior, likelihood,vocabulary):
@@ -115,11 +116,11 @@ def read(file):
     write_file = open("results_file.txt", "w") # Writing to file
     finalRead = read_me.readline()
     while (len(finalRead)!= 0):
+        finalRead = re.sub(r"[&)#-=$!(%)<>]+.@","",finalRead.lower())
         result = test(finalRead, prior,likelihood,vocabulary)
-        print("The class for this input is: ",result)
-        write_file.write(str(result)+" "+ str("\n"))
+        print(finalRead,result)
+        write_file.write(str(result) + str("\n"))
         finalRead = read_me.readline()
-
 
 
 # In[ ]:
